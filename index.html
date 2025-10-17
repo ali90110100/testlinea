@@ -5,27 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linea Burn Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #0f0f0f;
-            --secondary-dark: #1a1a1a;
-            --accent-cyan: #61dfff;
-            --accent-fire: #ff4d1f;
-            --text-white: #ffffff;
-            --text-light: #e0e0e0;
-            --text-gray: #888888;
+            --primary: #0f0f23;
+            --secondary: #1a1a2e;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --border: #2d3748;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: var(--primary-dark);
-            color: var(--text-white);
+            background-color: var(--primary);
+            color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -38,12 +41,12 @@
 
         /* Header Styles */
         header {
-            background: rgba(15, 15, 15, 0.95);
+            background: rgba(15, 15, 35, 0.95);
             backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             z-index: 1000;
-            border-bottom: 1px solid rgba(97, 223, 255, 0.2);
+            border-bottom: 1px solid var(--border);
         }
 
         .header-content {
@@ -56,13 +59,19 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-weight: 700;
             font-size: 1.5rem;
         }
 
         .logo-icon {
-            color: var(--accent-cyan);
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         nav ul {
@@ -72,30 +81,15 @@
         }
 
         nav a {
-            color: var(--text-white);
+            color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
-            position: relative;
+            font-size: 0.95rem;
         }
 
-        nav a:hover {
-            color: var(--accent-cyan);
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-cyan);
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
+        nav a:hover, nav a.active {
+            color: var(--accent-light);
         }
 
         /* Hero Section */
@@ -114,137 +108,118 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(97, 223, 255, 0.1), transparent 50%),
-                        radial-gradient(circle at 70% 20%, rgba(255, 77, 31, 0.05), transparent 50%);
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
             z-index: -1;
         }
 
         .hero-content {
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
+            width: 100%;
         }
 
         .hero h1 {
             font-size: 3.5rem;
-            margin-bottom: 20px;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--text-white), var(--accent-cyan));
+            margin-bottom: 16px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--text-primary), var(--accent-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
         .hero p {
             font-size: 1.2rem;
-            color: var(--text-light);
+            color: var(--text-secondary);
             margin-bottom: 40px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 600px;
         }
 
-        .hero-stats {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 50px;
+            gap: 24px;
+            margin-top: 60px;
         }
 
         .stat-card {
-            background: rgba(26, 26, 26, 0.7);
-            border-radius: 12px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(97, 223, 255, 0.1);
+            background: var(--secondary);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         .stat-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(97, 223, 255, 0.1);
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            color: var(--accent-cyan);
-            font-size: 1.5rem;
+            margin-right: 16px;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .stat-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
         .stat-value {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
-        .stat-label {
-            font-size: 1rem;
-            color: var(--text-gray);
-        }
-
-        .burn-animation {
-            position: relative;
-            width: 100px;
-            height: 120px;
-            margin: 0 auto 30px;
-        }
-
-        .flame {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 80px;
-            background: linear-gradient(to top, var(--accent-fire), #ff9d00);
-            border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 20px var(--accent-fire), 0 0 40px rgba(255, 77, 31, 0.5);
-            animation: flicker 3s infinite alternate;
-        }
-
-        .flame::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 40px;
-            background: linear-gradient(to top, #ff9d00, #ffcc00);
-            border-radius: 50% 50% 20% 20%;
-        }
-
-        @keyframes flicker {
-            0%, 100% { transform: translateX(-50%) scaleY(1); }
-            50% { transform: translateX(-50%) scaleY(1.1); }
+        .stat-change {
+            font-size: 0.9rem;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* Supply Section */
         .supply {
             padding: 100px 0;
-            background-color: var(--secondary-dark);
+            background-color: var(--secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
         }
 
         .section-title {
-            text-align: center;
-            margin-bottom: 60px;
             font-size: 2.5rem;
             font-weight: 700;
+            margin-bottom: 16px;
         }
 
-        .section-title span {
-            color: var(--accent-cyan);
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .supply-container {
@@ -253,72 +228,86 @@
             align-items: center;
         }
 
-        .supply-visual {
+        .supply-card {
+            background: var(--primary);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid var(--border);
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
+        }
+
+        .supply-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .supply-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .supply-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .supply-visual {
             margin-bottom: 40px;
         }
 
         .supply-bar {
-            height: 40px;
+            height: 12px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            border-radius: 6px;
             overflow: hidden;
-            margin: 15px 0;
+            margin-bottom: 16px;
             position: relative;
         }
 
-        .supply-burned {
+        .supply-progress {
             height: 100%;
-            background: linear-gradient(to right, var(--accent-fire), #ff7b54);
-            border-radius: 20px 0 0 20px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 6px;
             position: absolute;
             left: 0;
-            transition: width 2s ease-in-out;
-        }
-
-        .supply-circulating {
-            height: 100%;
-            background: linear-gradient(to right, var(--accent-cyan), #2a9df4);
-            border-radius: 20px;
-            position: relative;
             transition: width 2s ease-in-out;
         }
 
         .supply-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
             font-size: 0.9rem;
-            color: var(--text-gray);
+            color: var(--text-muted);
         }
 
         .supply-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 600px;
+            gap: 24px;
         }
 
         .supply-stat {
-            background: var(--primary-dark);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(97, 223, 255, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
         .supply-stat-value {
             font-size: 1.8rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
         .supply-stat-label {
             font-size: 0.9rem;
-            color: var(--text-gray);
+            color: var(--text-muted);
         }
 
         /* Contracts Section */
@@ -329,93 +318,101 @@
         .contract-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         .contract-card {
-            background: var(--secondary-dark);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid rgba(97, 223, 255, 0.1);
+            background: var(--secondary);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid var(--border);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .contract-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent);
         }
 
         .contract-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .contract-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(97, 223, 255, 0.1);
-            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--accent-cyan);
+            color: var(--accent);
             font-size: 1.2rem;
-            margin-right: 15px;
+            margin-right: 16px;
         }
 
         .contract-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
         }
 
         .contract-address {
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             background: rgba(255, 255, 255, 0.05);
-            padding: 10px 15px;
+            padding: 16px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             word-break: break-all;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
         .copy-btn {
             background: none;
             border: none;
-            color: var(--accent-cyan);
+            color: var(--accent);
             cursor: pointer;
             margin-left: 10px;
             font-size: 0.9rem;
+            transition: color 0.3s;
         }
 
         .copy-btn:hover {
-            color: var(--text-white);
+            color: var(--accent-light);
         }
 
         .contract-purpose {
-            color: var(--text-light);
+            color: var(--text-secondary);
             font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .explorer-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: var(--accent-cyan);
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+            color: var(--accent);
             text-decoration: none;
             font-weight: 500;
+            gap: 8px;
+            transition: color 0.3s;
         }
 
         .explorer-link:hover {
-            text-decoration: underline;
+            color: var(--accent-light);
         }
 
         /* Footer */
         footer {
-            background: var(--primary-dark);
+            background: var(--primary);
             padding: 60px 0 30px;
-            border-top: 1px solid rgba(97, 223, 255, 0.1);
+            border-top: 1px solid var(--border);
         }
 
         .footer-content {
@@ -434,7 +431,7 @@
         .footer-column h3 {
             margin-bottom: 20px;
             font-size: 1.2rem;
-            color: var(--accent-cyan);
+            color: var(--text-primary);
         }
 
         .footer-links {
@@ -446,20 +443,21 @@
         }
 
         .footer-links a {
-            color: var(--text-light);
+            color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 0.9rem;
         }
 
         .footer-links a:hover {
-            color: var(--accent-cyan);
+            color: var(--accent-light);
         }
 
         .footer-bottom {
             text-align: center;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-gray);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
@@ -482,7 +480,7 @@
                 font-size: 2rem;
             }
             
-            .hero-stats {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -493,6 +491,10 @@
             .contract-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .supply-card {
+                padding: 24px;
+            }
         }
     </style>
 </head>
@@ -502,12 +504,14 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-fire-flame-curved logo-icon"></i>
+                    <div class="logo-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
                     <span>Linea Burn</span>
                 </div>
                 <nav>
                     <ul>
-                        <li><a href="#supply">Supply</a></li>
+                        <li><a href="#supply" class="active">Supply</a></li>
                         <li><a href="#contracts">Contracts</a></li>
                     </ul>
                 </nav>
@@ -520,26 +524,35 @@
         <div class="hero-bg"></div>
         <div class="container">
             <div class="hero-content">
-                <div class="burn-animation">
-                    <div class="flame"></div>
-                </div>
-                <h1>LINEA BURN TRACKER</h1>
-                <p>Track the deflationary mechanism where 80% of network fees burn $LINEA and 20% burn $ETH</p>
+                <h1>Linea Burn<br>Mechanism</h1>
+                <p>Track the deflationary mechanism where 80% of network fees burn $LINEA and 20% burn $ETH in real-time.</p>
                 
-                <div class="hero-stats">
+                <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-fire"></i>
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="stat-title">Total $LINEA Burned</div>
                         </div>
                         <div class="stat-value" id="total-linea-burned">0</div>
-                        <div class="stat-label">Total $LINEA Burned</div>
+                        <div class="stat-change">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+2.5% today</span>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fab fa-ethereum"></i>
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fab fa-ethereum"></i>
+                            </div>
+                            <div class="stat-title">Total $ETH Burned</div>
                         </div>
                         <div class="stat-value" id="total-eth-burned">0</div>
-                        <div class="stat-label">Total $ETH Burned</div>
+                        <div class="stat-change">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+1.8% today</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -549,36 +562,45 @@
     <!-- Supply Section -->
     <section class="supply" id="supply">
         <div class="container">
-            <h2 class="section-title">$LINEA <span>Supply</span></h2>
+            <div class="section-header">
+                <h2 class="section-title">$LINEA Supply Metrics</h2>
+                <p class="section-subtitle">Track the evolution of $LINEA supply with real-time burn data</p>
+            </div>
             
             <div class="supply-container">
-                <div class="supply-visual">
-                    <div class="supply-bar">
-                        <div class="supply-burned" id="supply-burned-bar"></div>
-                        <div class="supply-circulating" id="supply-circulating-bar"></div>
+                <div class="supply-card">
+                    <div class="supply-header">
+                        <h3 class="supply-title">Supply Distribution</h3>
+                        <div class="supply-badge">Deflationary</div>
                     </div>
-                    <div class="supply-labels">
-                        <span>Burned</span>
-                        <span>Circulating</span>
+                    
+                    <div class="supply-visual">
+                        <div class="supply-bar">
+                            <div class="supply-progress" id="supply-progress"></div>
+                        </div>
+                        <div class="supply-labels">
+                            <span>Burned: <span id="burned-percentage">0%</span></span>
+                            <span>Circulating: <span id="circulating-percentage">100%</span></span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="supply-stats">
-                    <div class="supply-stat">
-                        <div class="supply-stat-value" id="initial-supply">72,009,990,000</div>
-                        <div class="supply-stat-label">Initial Total Supply</div>
-                    </div>
-                    <div class="supply-stat">
-                        <div class="supply-stat-value" id="current-supply">0</div>
-                        <div class="supply-stat-label">Current Total Supply</div>
-                    </div>
-                    <div class="supply-stat">
-                        <div class="supply-stat-value" id="burned-percentage">0%</div>
-                        <div class="supply-stat-label">Percentage Burned</div>
-                    </div>
-                    <div class="supply-stat">
-                        <div class="supply-stat-value" id="burned-today">0</div>
-                        <div class="supply-stat-label">Burned Today</div>
+                    
+                    <div class="supply-stats">
+                        <div class="supply-stat">
+                            <div class="supply-stat-value" id="initial-supply">72,009,990,000</div>
+                            <div class="supply-stat-label">Initial Total Supply</div>
+                        </div>
+                        <div class="supply-stat">
+                            <div class="supply-stat-value" id="current-supply">0</div>
+                            <div class="supply-stat-label">Current Total Supply</div>
+                        </div>
+                        <div class="supply-stat">
+                            <div class="supply-stat-value" id="burned-today">0</div>
+                            <div class="supply-stat-label">Burned Today</div>
+                        </div>
+                        <div class="supply-stat">
+                            <div class="supply-stat-value" id="burn-rate">0</div>
+                            <div class="supply-stat-label">Avg Burn Rate / Day</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -588,7 +610,10 @@
     <!-- Contracts Section -->
     <section class="contracts" id="contracts">
         <div class="container">
-            <h2 class="section-title">Contract <span>Addresses</span></h2>
+            <div class="section-header">
+                <h2 class="section-title">Contract Addresses</h2>
+                <p class="section-subtitle">Key smart contracts powering the Linea burn mechanism</p>
+            </div>
             
             <div class="contract-grid">
                 <div class="contract-card">
@@ -604,8 +629,11 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <p class="contract-purpose">Collects network fees on Linea</p>
-                    <a href="https://lineascan.build/address/0xfd5fb23e06e46347d8724486cdb681507592e237" class="explorer-link" target="_blank">View on LineaScan →</a>
+                    <p class="contract-purpose">Collects network fees on Linea and distributes them for burning.</p>
+                    <a href="https://lineascan.build/address/0xfd5fb23e06e46347d8724486cdb681507592e237" class="explorer-link" target="_blank">
+                        <span>View on LineaScan</span>
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </a>
                 </div>
                 
                 <div class="contract-card">
@@ -621,9 +649,15 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <p class="contract-purpose">Official $LINEA Token Contract</p>
-                    <a href="https://etherscan.io/address/0x1789e0043623282D5DCc7F213d703C6D8BAfBB04" class="explorer-link" target="_blank">View on Etherscan →</a>
-                    <a href="https://lineascan.build/address/0x1789e0043623282D5DCc7F213d703C6D8BAfBB04" class="explorer-link" target="_blank" style="margin-left: 15px;">View on LineaScan →</a>
+                    <p class="contract-purpose">Official $LINEA token contract on Ethereum and Linea.</p>
+                    <a href="https://etherscan.io/address/0x1789e0043623282D5DCc7F213d703C6D8BAfBB04" class="explorer-link" target="_blank">
+                        <span>View on Etherscan</span>
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </a>
+                    <a href="https://lineascan.build/address/0x1789e0043623282D5DCc7F213d703C6D8BAfBB04" class="explorer-link" target="_blank" style="margin-left: 20px;">
+                        <span>View on LineaScan</span>
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </a>
                 </div>
                 
                 <div class="contract-card">
@@ -639,8 +673,11 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <p class="contract-purpose">$LINEA tokens sent here are permanently burned</p>
-                    <a href="https://etherscan.io/address/0x000000000000000000000000000000000000dEaD" class="explorer-link" target="_blank">View on Etherscan →</a>
+                    <p class="contract-purpose">Permanent burn address for $LINEA tokens on Ethereum.</p>
+                    <a href="https://etherscan.io/address/0x000000000000000000000000000000000000dEaD" class="explorer-link" target="_blank">
+                        <span>View on Etherscan</span>
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </a>
                 </div>
                 
                 <div class="contract-card">
@@ -656,8 +693,11 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <p class="contract-purpose">$ETH sent here on Linea is permanently burned</p>
-                    <a href="https://lineascan.build/address/0x000000000000000000000000000000000000dEaD" class="explorer-link" target="_blank">View on LineaScan →</a>
+                    <p class="contract-purpose">Permanent burn address for $ETH on the Linea network.</p>
+                    <a href="https://lineascan.build/address/0x000000000000000000000000000000000000dEaD" class="explorer-link" target="_blank">
+                        <span>View on LineaScan</span>
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -669,7 +709,7 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>Linea Burn Tracker</h3>
-                    <p>Tracking the deflationary mechanism of the Linea network.</p>
+                    <p>Community-driven tracker for Linea's deflationary burn mechanism.</p>
                 </div>
                 
                 <div class="footer-column">
@@ -678,6 +718,16 @@
                         <li><a href="#">Linea Documentation</a></li>
                         <li><a href="#">Etherscan</a></li>
                         <li><a href="#">LineaScan</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Community</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Telegram</a></li>
                     </ul>
                 </div>
             </div>
@@ -697,22 +747,27 @@
             let totalLineaBurned = 1250000000; // Example value - would come from API
             let totalEthBurned = 4850; // Example value - would come from API
             let burnedToday = 15000000; // Example value - would come from API
+            let burnRate = 12000000; // Example value - would come from API
             
             // Calculate derived values
             const currentSupply = initialSupply - totalLineaBurned;
             const burnedPercentage = ((totalLineaBurned / initialSupply) * 100).toFixed(2);
+            const circulatingPercentage = (100 - burnedPercentage).toFixed(2);
             
             // Animate numbers counting up
             animateValue('total-linea-burned', 0, totalLineaBurned, 2000, ' LINEA');
             animateValue('total-eth-burned', 0, totalEthBurned, 2000, ' ETH');
             animateValue('current-supply', 0, currentSupply, 2000, ' LINEA');
-            animateValue('burned-percentage', 0, burnedPercentage, 2000, '%');
             animateValue('burned-today', 0, burnedToday, 2000, ' LINEA');
+            animateValue('burn-rate', 0, burnRate, 2000, ' LINEA');
             
-            // Animate supply bars
+            // Update percentage labels
+            document.getElementById('burned-percentage').textContent = `${burnedPercentage}%`;
+            document.getElementById('circulating-percentage').textContent = `${circulatingPercentage}%`;
+            
+            // Animate supply progress bar
             setTimeout(() => {
-                document.getElementById('supply-burned-bar').style.width = `${burnedPercentage}%`;
-                document.getElementById('supply-circulating-bar').style.width = `${100 - burnedPercentage}%`;
+                document.getElementById('supply-progress').style.width = `${burnedPercentage}%`;
             }, 500);
             
             // Setup copy buttons
@@ -753,7 +808,7 @@
                         // Visual feedback
                         const originalHTML = button.innerHTML;
                         button.innerHTML = '<i class="fas fa-check"></i>';
-                        button.style.color = '#4CAF50';
+                        button.style.color = '#10b981';
                         
                         setTimeout(() => {
                             button.innerHTML = originalHTML;
